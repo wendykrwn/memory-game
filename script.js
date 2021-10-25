@@ -1,4 +1,6 @@
 const container = document.querySelector(".container");
+const btnWinner = document.querySelector("#btn-winner");
+const popupContainer = document.querySelector(".popup-container");
 const listes = [0,1,2,3,4,5];
 const listeDouble = listes.reduce((prev,current)=> [...prev,current,current]
 ,[]);
@@ -19,6 +21,10 @@ listeDouble.map(key => {
     `
 })
 
+btnWinner.addEventListener("click",()=>{
+    reStart();
+})
+
 const cards = [...document.querySelectorAll(".content")];
 cards.map(el => {
     el.parentElement.addEventListener("click",()=>{
@@ -36,6 +42,9 @@ async function returnCard(card){
             stopEvent();
             if(card.dataset.content === activeCard.dataset.content){
                 openedCard.push(card,activeCard);
+                if(openedCard.length === listeDouble.length ){
+                    win();
+                }
             }
             else{
                 await returnCardBackWithDelay(card,activeCard);
@@ -64,4 +73,31 @@ function stopEvent(){
 
 function randomInt(max,min=0){
     return Math.round( Math.random() * max - min);
+}
+
+function win(){
+    setTimeout(()=>{
+        document.querySelector(".game").classList.add("blur-filter");
+        popupContainer.classList.remove("hidden");
+    },500)
+}
+
+function reStart(){
+    document.querySelector(".game").classList.remove("blur-filter");
+    popupContainer.classList.add("hidden");
+
+    activeCard = null;
+    openedCard = [];
+
+    cards.map(el => {
+        el.classList.remove("active");
+    })
+    
+    setTimeout(()=>{
+        listeDouble.sort(() => 0.5 - Math.random());
+        for(let i = 0;i<cards.length;i++){
+            cards[i].dataset.content = listeDouble[i];
+            cards[i].querySelector(".front").innerHTML = `${listeDouble[i]}`;
+        }
+    },500)
 }
