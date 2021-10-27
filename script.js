@@ -1,7 +1,41 @@
 const container = document.querySelector(".container");
 const btnWinner = document.querySelector("#btn-winner");
 const popupContainer = document.querySelector(".popup-container");
-const listes = [0,1,2,3,4,5];
+const listes = [
+    {
+        name:"naruto",
+        src:"images/naruto.png"
+    },
+    {
+        name:"sasuke",
+        src:"images/sasuke.png"
+    },
+    {
+        name:"sakura",
+        src:"images/sakura.png"
+    },
+    {
+        name:"kakashi",
+        src:"images/kakashi.png"
+    },
+    {
+        name:"shikamaru",
+        src:"images/shikamaru.png"
+    },
+    {
+        name:"jiraya",
+        src:"images/jiraya.png"
+    },
+    {
+        name:"gaara",
+        src:"images/gaara.png"
+    },
+    {
+        name:"tsunade",
+        src:"images/tsunade.png"
+    },  
+];
+
 const listeDouble = listes.reduce((prev,current)=> [...prev,current,current]
 ,[]);
 let activeCard = null;
@@ -13,13 +47,18 @@ listeDouble.sort(() => 0.5 - Math.random());
 listeDouble.map(key => {
     container.innerHTML += `
     <div class="card">
-    <div class="content"  data-content=${key}>
-        <div class="back"></div>
-        <div class="front">${key}</div>
+    <div class="content"  data-content=${key.name}>
+        <div class="back">
+            <img src="images/shuriken.png"></img>
+        </div>
+        <div class="front">
+            <img src=${key.src}></img>
+        </div>
     </div>
     </div>
     `
 })
+
 
 btnWinner.addEventListener("click",()=>{
     reStart();
@@ -40,10 +79,18 @@ async function returnCard(card){
         }
         else{
             stopEvent();
+            //match
             if(card.dataset.content === activeCard.dataset.content){
                 openedCard.push(card,activeCard);
+
+                match(card);
+                match(activeCard)
+
                 if(openedCard.length === listeDouble.length ){
                     win();
+                    cards.map(el =>{
+                        match(el);
+                    })
                 }
             }
             else{
@@ -52,6 +99,13 @@ async function returnCard(card){
             activeCard = null;
         }
     }
+}
+
+const match = (card) => {
+    card.querySelector(".front").style.backgroundColor = "rgb(255, 208, 108)";
+    setTimeout(()=>{
+        card.querySelector(".front").style.backgroundColor = "white";
+    },1000)
 }
 
 const returnCardBackWithDelay = (card,activeCard) =>{
@@ -79,7 +133,7 @@ function win(){
     setTimeout(()=>{
         document.querySelector(".game").classList.add("blur-filter");
         popupContainer.classList.remove("hidden");
-    },500)
+    },2000)
 }
 
 function reStart(){
@@ -96,8 +150,8 @@ function reStart(){
     setTimeout(()=>{
         listeDouble.sort(() => 0.5 - Math.random());
         for(let i = 0;i<cards.length;i++){
-            cards[i].dataset.content = listeDouble[i];
-            cards[i].querySelector(".front").innerHTML = `${listeDouble[i]}`;
+            cards[i].dataset.content = listeDouble[i].name;
+            cards[i].querySelector(".front img").src = `${listeDouble[i].src}`;
         }
     },500)
 }
