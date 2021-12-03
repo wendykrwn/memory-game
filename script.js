@@ -1,6 +1,9 @@
 const container = document.querySelector(".container");
 const btnWinner = document.querySelector("#btn-winner");
 const popupContainer = document.querySelector(".popup-container");
+const bgSound = document.querySelector("#bg-song");
+const matchSound = document.querySelector("#match-sound");
+bgSound.volume = 0.1;
 const listes = [
     {
         name:"naruto",
@@ -48,6 +51,7 @@ listeDouble.map(key => {
     container.innerHTML += `
     <div class="card">
     <div class="content"  data-content=${key.name}>
+        <audio class="card-sound" src="audios/card.mp3"></audio>
         <div class="back">
             <img src="images/shuriken.png"></img>
         </div>
@@ -67,6 +71,7 @@ btnWinner.addEventListener("click",()=>{
 const cards = [...document.querySelectorAll(".content")];
 cards.map(el => {
     el.parentElement.addEventListener("click",()=>{
+        el.parentElement.querySelector(".card-sound").play();
         returnCard(el);
     })
 })
@@ -83,6 +88,9 @@ async function returnCard(card){
             if(card.dataset.content === activeCard.dataset.content){
                 openedCard.push(card,activeCard);
 
+                setTimeout(()=>{
+                    matchSound.play();
+                },1000)
                 match(card);
                 match(activeCard)
 

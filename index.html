@@ -10,13 +10,18 @@
     <body>
         <div class="game">
             <a href="https://fontmeme.com/polices/police-ninja-naruto/"><img src="https://fontmeme.com/permalink/211026/c509d1d785b55a95ea018322d6cbbd64.png" alt="police-ninja-naruto" border="0"></a>
+            <audio id="bg-song" src="audios/naruto-song.mp3" autoplay loop ></audio>
+            <audio id="match-sound" src="audios/match.wav"></audio>
             <div class="container"></div>
         </div>
         <div class="popup-container hidden">
             <div class="popup-winner">
                 <h1>Yeaahh !</h1>
-                <p>You won. Do you want to replay ?</p>
-                <button class="btn btn-winner" id="btn-winner">Replay</button>
+                <p>You won. Do you wanna replay ?</p>
+                <div class="btn-container">
+                    <button class="btn btn-winner" id="btn-winner">Yesss</button>
+                    <button class="btn btn-default">Naah</button>
+                </div>
             </div>
         </div>
     </body>
